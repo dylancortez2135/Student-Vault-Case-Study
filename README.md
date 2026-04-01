@@ -1,5 +1,19 @@
 # Student Vault: Institutional Data Infrastructure & ETL Pipeline
 
+---
+
+> ### 🛡️ Security & Sanitization Note
+> <small>This repository is a **technical showcase** of an end-to-end Data Engineering pipeline. For security and privacy, the following measures have been applied:</small>
+>
+> * <small>**Abstracted Endpoints:** All URLs and API selectors use generic placeholders.</small>
+> * <small>**Standardized Schema:** Database objects use industry-standard naming conventions (`stg_`, `fct_`, `dim_`) to demonstrate **Medallion Architecture**.</small>
+> * <small>**Zero-Secret Policy:** No real-world credentials or API keys are included; configuration is handled via `.env` (not tracked).</small>
+> * <small>**Data Privacy:** Logic includes PII protection and `bcrypt` password hashing.</small>
+>
+> <small>**Purpose:** This project is intended for **architectural audit** and logic review. It demonstrates proficiency in **Python (FastAPI)**, **SQL (Procedures)**, and **Dimensional Modeling**.</small>
+
+---
+
 ## Executive Summary
 Developed **Student Vault**, an end-to-end data engineering solution that automates the extraction and transformation of legacy student portal data. By implementing a **three-tier Medallion-style architecture** and **SCD Type 2 modeling**, I achieved a **125x data compression ratio**, transforming 250,000+ raw records into a streamlined 2,000-row analytical layer.
 
