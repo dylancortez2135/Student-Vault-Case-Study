@@ -19,6 +19,16 @@ Developed **Student Vault**, an end-to-end data engineering solution that automa
 
 ---
 
+## Architecture Diagram
+
+![Architecture_Diagram](Diagram.png)
+
+* **Orchestration:** Containerized via Docker.
+* **Logic:** Python-driven extraction with PostgreSQL stored procedures for transformation.
+* **Data Modeling:** Implementation of **SCD Type 2** in the dim_student_history table to track academic progression.
+
+---
+
 ## The Problem: Underleveraged Data Assets
 The University Student Portal contained years of academic records, yet it remained an underleveraged resource. Because data was trapped and underleveraged, high-value administrative tasks—like the weeks-long manual verification of President's and Dean's List honors—required hundreds of man-hours of manual GWA calculation. The university had the data, but lacked the **analytical infrastructure** to use it.
 
