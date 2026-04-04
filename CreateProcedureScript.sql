@@ -110,4 +110,10 @@ SELECT
     wp.student_number, wp.program, wp.year_level, wp.current_school_year, wp.general_weighted_average, 
     AVG(general_weighted_average) OVER (PARTITION BY wp.student_number ORDER BY current_school_year ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS cumulative_average, 
     CASE WHEN CARDINALITY(student_stats) % 2 = 1 THEN 'On-going' ELSE 'Finished' END AS semester_status, 
-    student_stats,
+    student_stats, 
+    CASE WHEN wp.current_school_year = fy.first_year + 4 THEN 'Graduate' ELSE 'Undergraduate' END AS academic_level
+FROM with_per_academic_level wp
+JOIN first_years fy ON wp.student_number = fy.student_number
+ON CONFLICT (student_number, school_year) DO NOTHING;
+END;
+$$;
