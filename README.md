@@ -2,7 +2,7 @@
 
 ---
 
-> ### 🛡️ Security & Sanitization Note
+> ### Security & Sanitization Note
 > <small>This repository is a **technical showcase** of an end-to-end Data Engineering pipeline. For security and privacy, the following measures have been applied:</small>
 >
 > * <small>**Abstracted Endpoints:** All URLs and API selectors use generic placeholders.</small>
@@ -15,17 +15,17 @@
 ---
 
 ## Executive Summary
-Developed **Student Vault**, an end-to-end data engineering solution that automates the extraction and transformation of legacy student portal data. By implementing a **three-tier Medallion-style architecture** and **SCD Type 2 modeling**, I achieved a **125x data compression ratio**, transforming 250,000+ raw records into a streamlined 2,000-row analytical layer.
+Developed **Student Vault**, an end-to-end data engineering solution that automates the extraction and transformation of legacy student portal data. By implementing a **three-tier Medallion-style architecture** and **State-tracking Nested Array SCD Type 2 modeling**, I achieved a **125x data compression ratio**, transforming 250,000+ raw records into a streamlined 2,000-row analytical layer. This foundation allowed for functional modules to be developed atop the gold layer, automating manual efforts such as GWA calculations and awards eligibility verifications.
 
 ---
 
 ## Architecture Diagram
 
-![Architecture_Diagram](Diagram.png)
+![Architecture_Diagram](Standard_Diagram.png)
 
 * **Orchestration:** Containerized via Docker.
 * **Logic:** Python-driven extraction with PostgreSQL stored procedures for transformation.
-* **Data Modeling:** Implementation of **SCD Type 2** in the dim_student_history table to track academic progression.
+* **Data Modeling:** Implementation of **State-tracking Nested Array SCD Type 2 Modeling** in the int_student_history table to track academic progression.
 
 ---
 
@@ -36,21 +36,35 @@ The University Student Portal contained years of academic records, yet it remain
 
 ## Technical Solution
 
-### 1. Ingestion Engine & Prototype UI
+### 1. Prototype UI & ETL Data Pipeline
 * **UI Prototype:** Developed a custom front-end (**Student Vault**) to showcase potential UX improvements and analytical functionalities.
 * **Extraction:** Built a Python-based ingestion engine to scrape the existing University Portal’s Grade Endpoint, handling complex session authentication and HTML parsing to migrate data from the legacy system into the Vault ecosystem.
+* **Transformation & Load:** Developed a sql-based transformation stored procedure that handles the majority of the transformations (Nested CTEs, complex joins, and state-tracking nested array SCD Type 2 Modeling) and stores the data into a 3-Layer Data Lakehouse
+
 
 ### 2. The 3-Layer Analytical Warehouse
 To ensure efficiency and scalability, I implemented a Medallion-style architecture:
 
-| Layer | Type | Description |
+| Layer | Contains | Description |
 | :--- | :--- | :--- |
-| **Bronze** | **Raw** | Preserved granular grade data (Initial pilot: ≈250k rows for 500 students) for full auditability. |
-| **Silver** | **Semestral** | **Operational Truth:** Programmatically aggregated individual grades into semestral GWAs. This serves as the **Single Source of Truth** for immediate actions, such as honors assessment. |
-| **Gold** | **Yearly** | **Historical Truth:** Applied **SCD Type 2 Modeling** to track academic status evolution and maintain historical snapshots of the student journey. |
+| **Bronze** | **Raw Data** | Preserved granular grade data (Initial pilot: ≈250k rows for 500 students) for full auditability. |
+| **Silver** | **Nested Historical Data** | Implemented State-tracking Nested Array SCD Type 2 Modeling. This "Operational Truth" handles grade adjustments without losing historical context. |
+| **Gold** | **Semestral Data** | Programmatically aggregated individual grades from the silver layer into semestral GWAs. This serves as the **Single Source of Truth** for immediate actions, such as honors assessment. |
+| **Gold** | **Yearly Data** | Compressed Data even further by year level, providing a 125x data compression ratio for reporting and more aggregations such as academic status.|
 
 ### 3. Proof of Concept: Automated Honors Assessor
-Built the first functional module atop the **Silver Layer** to instantly identify Dean’s and President’s List candidates, a task that previously required manual cross-referencing of hundreds of physical and digital records.
+Automated the aggregations inside the **Gold Layer** that instantly identify Dean’s and President’s List candidates, a task that previously required manual cross-referencing of hundreds of physical and digital records.
+
+---
+
+## Architecture Evolution: From Efficiency to Integrity
+The Student Vault evolved through two distinct architectural phases to balance the needs of portal stability with institutional data requirements.
+
+### Phase 1: Inverted Tier (Efficiency Optimization)
+Initial development prioritized University's legacy portal's footprint Reduction. To minimize the footprint on the University’s legacy portal, the system used an "Inverted Ingestion" model. This bypassed redundant layers to deliver rapid UX responses but lacked long-term state tracking. Diagram can been seen here: [Inverted_Architecture_Diagram](Inverted_Diagram.png)
+
+### Phase 2: Medallion Architecture (Institutional Standard)
+For the Pilot Program, the architecture was re-engineered into a traditional Three-Tier Medallion Pipeline. This transition was critical to support Auditability and SCD Type 2 Modeling, ensuring that every grade adjustment is tracked as a historical event.
 
 ---
 
