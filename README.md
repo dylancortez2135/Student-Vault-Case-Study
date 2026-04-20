@@ -21,7 +21,7 @@ Developed **Student Vault**, an end-to-end data engineering solution that automa
 
 ## Architecture Diagram
 
-![Architecture_Diagram](Standard_Diagram.png)
+![Architecture_Diagram](standard_Diagram.png)
 
 * **Orchestration:** Containerized via Docker.
 * **Logic:** Python-driven extraction with PostgreSQL stored procedures for transformation.
