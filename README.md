@@ -1,4 +1,4 @@
-# Student Vault: Institutional Data Infrastructure & ETL Pipeline
+# Student Vault: Institutional Data Infrastructure & ELTL Pipeline
 
 ---
 
@@ -36,9 +36,9 @@ The University Student Portal contained years of academic records, yet it remain
 
 ## Technical Solution
 
-### 1. Prototype UI & ETL Data Pipeline
+### 1. Prototype UI & ELTL Data Pipeline
 * **UI Prototype:** Developed a custom front-end (**Student Vault**) to showcase potential UX improvements and analytical functionalities.
-* **Extraction:** Built a Python-based ingestion engine to scrape the existing University Portal’s Grade Endpoint, handling complex session authentication and HTML parsing to migrate data from the legacy system into the Vault ecosystem.
+* **Extraction & Load:** Built a Python-based ingestion engine to scrape the existing University Portal’s Grade Endpoint, handling complex session authentication and HTML parsing to migrate the raw data from the legacy system into the staging layer of the system.
 * **Transformation & Load:** Developed a sql-based transformation stored procedure that handles the majority of the transformations (Nested CTEs, complex joins, and state-tracking nested array SCD Type 2 Modeling) and stores the data into a 3-Layer Data Lakehouse
 
 
